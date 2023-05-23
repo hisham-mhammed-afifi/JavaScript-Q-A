@@ -516,13 +516,13 @@ state: RouterStateSnapshot
 // Check if user is authenticated
 const isAuthenticated = // logic to check if user is authenticated
 
-if (isAuthenticated) {
-return true;
-} else {
-// Redirect to login page
-return this.router.parseUrl('/login');
-}
-}
+  if (isAuthenticated) {
+      return true;
+    } else {
+      // Redirect to login page
+      return this.router.parseUrl('/login');
+    }
+  }
 }
 ```
 
