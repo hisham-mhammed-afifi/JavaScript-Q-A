@@ -7,6 +7,7 @@ var message = "Hello!";
 ```
 
 In this example, the `message` variable is hoisted to the top, but its value is `undefined` until the assignment statement is reached.
+
 **2. `null` vs. `undefined`:** Use Case: Differentiating intentional absence (`null`) from uninitialized or missing value (`undefined`).
 
 ```js
@@ -18,6 +19,7 @@ console.log(age); // Output: undefined
 ```
 
 Here, `name` is set to `null` to indicate that there is no name available, while `age` is undefined because it hasn't been assigned a value.
+
 **3. Closures: Use Case:** Closures are useful for data encapsulation and creating private variables.
 
 ```js
@@ -40,6 +42,7 @@ console.log(counter.getCount()); // Output: 1
 ```
 
 In this example, the `createCounter` function returns an object with two methods: `increment` and `getCount`. The `count` variable is enclosed within the returned object, creating a closure that allows accessing and modifying the `count` variable.
+
 **4. Synchronous vs. Asynchronous programming:** Use Case: Asynchronous programming is essential for handling time-consuming operations without blocking the main execution thread.
 
 ```js
@@ -52,6 +55,7 @@ console.log("End");
 ```
 
 In this example, the `setTimeout` function is used to simulate an asynchronous operation that will execute after 2 seconds. While the timer is running, the program continues executing the rest of the code, resulting in "Start" and "End" being logged before the "Async operation".
+
 **5. Event loop: Use Case:** The event loop handles asynchronous operations and ensures the responsive and non-blocking nature of JavaScript.
 
 ```js
@@ -67,6 +71,7 @@ console.log("End");
 ```
 
 In this example, `setTimeout` and `Promise.resolve().then()` are queued in the event loop for execution. Even though the timeout is set to 0 milliseconds, the "Async operation" will be logged after "Promise resolved" due to the event loop's order of execution.
+
 **6. `let`, `const`, and `var`:** Use Case: Choosing the appropriate variable declaration based on scope and mutability requirements.
 
 ```js
@@ -86,6 +91,7 @@ example();
 ```
 
 In this example, `var` declares a variable that is function-scoped, allowing it to be accessed outside the `if` block. However, `let` and `const` are block-scoped and can only be accessed within their respective blocks.
+
 **7. Shallow copy vs. Deep copy:** Use Case: Copying objects or arrays while maintaining data integrity and avoiding unintended mutations.
 
 ```js
@@ -109,6 +115,7 @@ console.log(deepCopy); // Output: [1, 2, 3, 4]
 ```
 
 In this example, the spread operator (`...`) creates a new array with the same values as `originalArray`. Modifying `deepCopy` does not affect `originalArray` since they are separate arrays in memory.
+
 **8. `this` keyword:** Use Case: Understanding the dynamic context of `this` based on how a function is called.
 
 ```js
@@ -126,6 +133,7 @@ boundGreet(); // Output: Hello, John!
 ```
 
 In this example, when `greet` is called directly, the `this` keyword refers to the global object (in non-strict mode), resulting in `undefined` for `this.name`. However, using `bind` explicitly binds the `person` object as the `this` value, allowing the correct name to be logged.
+
 **9. `==` vs. `===`:** Use Case: Comparing values for equality and understanding the differences in coercion behavior.
 
 ```js
@@ -135,6 +143,7 @@ console.log(5 === "5"); // Output: false
 ```
 
 In JavaScript, `==` performs type coercion before comparison, allowing different types to be considered equal if their values match. However, `===` performs a strict equality comparison, checking for both value and type.
+
 **10. Data types in JavaScript:** Use Case: Identifying and working with different types of data.
 
 ```js
@@ -158,6 +167,7 @@ console.log(typeof empty); // Output: object
 ```
 
 In this example, various data types in JavaScript are assigned to different variables, and the `typeof` operator is used to determine their types.
+
 **11. Event delegation:** Use Case: Efficiently handling events on dynamically added elements or child elements within a parent container.
 
 ```js
@@ -171,6 +181,7 @@ parentContainer.addEventListener("click", function (event) {
 ```
 
 In this example, instead of attaching individual event listeners to each button element, a single event listener is attached to the parent container. The event is then delegated to the appropriate button element based on the target of the event.
+
 **12. Callback functions:** Use Case: Handling asynchronous operations or executing code after a specific event or task completes.
 
 ```js
@@ -189,6 +200,7 @@ fetchData("https://api.example.com/data", processData);
 ```
 
 In this example, the `fetchData` function performs an asynchronous request and accepts a callback function as an argument. Once the data is fetched, the callback function `processData` is invoked with the retrieved data as its argument.
+
 **13. `bind` method:** Use Case: Setting the `this` value explicitly for a function or creating partially applied functions.
 
 ```js
@@ -206,6 +218,7 @@ boundGreet(); // Output: Hi, John!
 ```
 
 In this example, the `greet` function is initially assigned to `greet`, causing the `this` value to become `undefined`. However, using `bind` to bind `person` as the `this` value and provide the message argument creates a new function `boundGreet` that logs the desired greeting.
+
 **14. Lexical scoping:** Use Case: Resolving variable names based on their placement in the source code and scoping rules.
 
 ```js
@@ -223,6 +236,7 @@ outer();
 ```
 
 In this example, the `inner` function has its own `x` variable, which shadows the `x` variable in the outer function. The concept of lexical scoping allows accessing the inner `x` within the `inner` function, while the outer `x` remains unaffected.
+
 **15. `map` method:** Use Case: Transforming elements of an array to create a new array.
 
 ```js
@@ -235,6 +249,7 @@ console.log(squaredNumbers); // Output: [1, 4, 9, 16, 25]
 ```
 
 In this example, the `map` method is used to transform each element of the `numbers` array by squaring it. The resulting array, `squaredNumbers`, contains the squared values of the original numbers.
+
 **16. Promises:** Use Case: Handling asynchronous operations and chaining multiple operations.
 
 ```js
@@ -259,6 +274,7 @@ fetchData("https://api.example.com/data")
 ```
 
 In this example, the `fetchData` function returns a Promise that resolves with the fetched data. The `processData` function is then called with the resolved data using the `then` method. If any errors occur during the Promise chain, they are caught and logged using the `catch` method.
+
 **17. Arrow functions:** Use Case: Writing concise function expressions and avoiding the need for `this` binding.
 
 ```js
@@ -269,6 +285,7 @@ console.log(doubledNumbers); // Output: [2, 4, 6, 8, 10]
 ```
 
 In this example, the arrow function syntax is used to create a concise function expression that doubles each element of the `numbers` array, resulting in the `doubledNumbers` array.
+
 **18. `apply` and `call` methods:** Use Case: Invoking a function with a specific `this` value and arguments.
 
 ```js
@@ -287,6 +304,7 @@ greet.apply(person, ["Hi"]); // Output: Hi, John!
 ```
 
 In this example, the `call` and `apply` methods are used to invoke the `greet` function with `person` as the `this` value and "Hello" and "Hi" as the respective message arguments.
+
 **19. `forEach` method:** Use Case: Iterating over an array and performing an operation on each element.
 
 ```js
@@ -304,6 +322,7 @@ numbers.forEach(function (num) {
 ```
 
 In this example, the `forEach` method is used to iterate over each element of the `numbers` array and log its double.
+
 **20. `localStorage` vs. `sessionStorage`:** Use Case: Storing data in the browser and understanding the differences in data persistence.
 
 ```js
