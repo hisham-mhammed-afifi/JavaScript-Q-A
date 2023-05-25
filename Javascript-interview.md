@@ -1,357 +1,572 @@
-**1. Hoisting:** Use Case: Hoisting allows you to use functions or variables before they are declared.
+## **1. What is event bubbling and how can it be prevented?**
+
+Event bubbling is a mechanism in which an event that is triggered on a nested or child element will also trigger on its parent elements, propagating up the DOM tree.
+
+For example, if you have a button inside a div, when you click on the button, the click event will first be triggered on the button itself, then it will propagate up to the enclosing div, and finally to any parent elements of the div.
+
+To prevent event bubbling in JavaScript, you can use the `stopPropagation()` method on the event object. This method stops the event from propagating up the DOM tree.
+
+For example:
 
 ```js
-// Example
-console.log(message); // Output: undefined
-var message = "Hello!";
+document.querySelector("button").addEventListener("click", function (event) {
+  event.stopPropagation();
+  // Event handling logic for the button click
+});
 ```
 
-In this example, the `message` variable is hoisted to the top, but its value is `undefined` until the assignment statement is reached.
+In this example, calling `event.stopPropagation()` stops the click event from bubbling up beyond the button element.
 
-**2. `null` vs. `undefined`:** Use Case: Differentiating intentional absence (`null`) from uninitialized or missing value (`undefined`).
+## **2. Explain the concept of hoisting.**
+
+Hoisting is a behavior in JavaScript in which variable and function declarations are moved to the top of their respective scopes, regardless of where they are declared. This means that variables and functions can be used before they are declared without raising a reference error.
+
+However, it is important to note that only the declarations are hoisted, not the initializations or assignments. If a variable is declared using `var` or `let`, its initialization is undefined until a value is assigned to it.
+
+Here is an example of hoisting:
 
 ```js
-// Example
-let name = null; // Explicitly set to null to indicate absence
-let age; // Implicitly undefined since no value is assigned
-console.log(name); // Output: null
-console.log(age); // Output: undefined
+console.log(x); // Output: undefined
+var x = 10;
 ```
 
-Here, `name` is set to `null` to indicate that there is no name available, while `age` is undefined because it hasn't been assigned a value.
-
-**3. Closures: Use Case:** Closures are useful for data encapsulation and creating private variables.
+In this example, we try to log the value of `x` before it is declared. However, because variable declarations are hoisted to the top of their scope, the code above is equivalent to:
 
 ```js
-// Example
-function createCounter() {
-  let count = 0;
+var x;
+console.log(x); // Output: undefined
+x = 10;
+```
 
-  return {
-    increment: function () {
-      count++;
-    },
-    getCount: function () {
-      return count;
-    },
+Similarly, function declarations are also hoisted to the top of their scope. For example:
+
+```js
+foo(); // Output: 'Hello!'
+
+function foo() {
+  console.log("Hello!");
+}
+```
+
+In this example, we call the `foo` function before it is declared. However, because function declarations are hoisted, the code above is equivalent to:
+
+```js
+function foo() {
+  console.log("Hello!");
+}
+
+foo(); // Output: 'Hello!'
+```
+
+It's important to understand hoisting when working with JavaScript, as it can sometimes lead to unexpected behavior if declarations are not properly scoped or initialized.
+
+## **3. How can you clone an object in JavaScript?**
+
+In JavaScript, there are several ways to clone an object. Here are three common approaches:
+
+1.  Using the spread operator (`...`)
+
+The spread operator can be used to create a shallow copy of an object. This approach creates a new object that has the same properties and values as the original object.
+
+```js
+const originalObj = { a: 1, b: 2 };
+const clonedObj = { ...originalObj };
+
+console.log(clonedObj); // Output: {a: 1, b: 2}
+```
+
+Note that this approach only creates a shallow copy of the object, which means that any nested objects or arrays will still reference the same memory location as the original object.
+
+2.  Using `Object.assign()`
+
+The `Object.assign()` method can also be used to create a shallow copy of an object. This method copies the enumerable own properties from one or more source objects to a target object, and returns the target object.
+
+```js
+const originalObj = { a: 1, b: 2 };
+const clonedObj = Object.assign({}, originalObj);
+
+console.log(clonedObj); // Output: {a: 1, b: 2}
+```
+
+Note that like the spread operator approach, `Object.assign()` only creates a shallow copy of the object.
+
+3.  Using `JSON.stringify()` and `JSON.parse()`
+
+This approach can be used to create a deep copy of an object, including nested objects or arrays. However, it has some limitations, such as not being able to clone functions or non-enumerable properties.
+
+```js
+const originalObj = { a: 1, b: { c: 2 } };
+const clonedObj = JSON.parse(JSON.stringify(originalObj));
+
+console.log(clonedObj); // Output: {a: 1, b: {c: 2}}
+```
+
+This approach first converts the object to a JSON-formatted string using `JSON.stringify()`, and then parses the string back into an object using `JSON.parse()`. The resulting object is a deep copy of the original object.
+
+Keep in mind that while these techniques are useful for cloning objects, they may have limitations depending on the specific use case.
+
+
+## **4. What is the difference between synchronous and asynchronous code?**
+
+In JavaScript, synchronous and asynchronous code refer to different ways of executing code.
+
+Synchronous code is executed sequentially, one statement at a time. When a statement is executed, the program waits for it to complete before moving on to the next statement. Synchronous code blocks the execution thread until it completes, meaning that the program can't do anything else while that code is running.
+
+For example:
+
+```js
+console.log("First");
+console.log("Second");
+console.log("Third");
+```
+
+In this example, the three `console.log()` statements are executed synchronously, in order from first to third.
+
+Asynchronous code, on the other hand, allows the program to execute multiple operations at the same time without blocking the execution thread. In asynchronous code, when an operation is started, the program continues to run without waiting for the operation to complete. The result of the operation is handled by a callback function or a promise, which is executed when the operation is finished.
+
+For example:
+
+```js
+console.log("First");
+setTimeout(() => console.log("Second"), 1000);
+console.log("Third");
+```
+
+In this example, the first and third `console.log()` statements are executed synchronously. However, the second `console.log()` statement is executed asynchronously, using the `setTimeout()` function to delay its execution by one second. During that one second delay, the program continues to run and executes the third `console.log()` statement. After one second has passed, the `setTimeout()` callback function is executed, outputting 'Second' to the console.
+
+Asynchronous code is useful when working with I/O operations, such as reading from a file or making an API call, or when performing long-running computations that could block the execution thread. By using asynchronous code, the program can continue to respond to user input or perform other tasks while these operations are being processed.
+
+In summary, synchronous code blocks the execution thread until it completes, while asynchronous code allows multiple operations to be executed simultaneously without blocking the execution thread.
+
+
+## **5. What is memoization in JavaScript?**
+
+Memoization is a technique used to optimize the performance of functions by caching the results of expensive function calls and returning the cached result when the same inputs occur again.
+
+In JavaScript, memoization can be implemented using closures. The basic idea is to create a closure that contains a cache object. The closure returns a function that checks if the requested input has already been cached, and returns the cached result if it exists. If the input has not yet been cached, the closure calls the original function with the input parameter, caches the result, and returns the result.
+
+Here's an example of how to implement memoization:
+
+```js
+function memoize(func) {
+  const cache = {};
+  return function (...args) {
+    const key = JSON.stringify(args);
+    if (cache[key]) {
+      console.log("Returning from cache:", cache[key]);
+      return cache[key];
+    }
+    const result = func.apply(this, args);
+    console.log("Adding to cache:", result);
+    cache[key] = result;
+    return result;
   };
 }
-const counter = createCounter();
-counter.increment();
-console.log(counter.getCount()); // Output: 1
+
+// Example function to be memoized
+function fibonacci(n) {
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+const memoizedFibonacci = memoize(fibonacci);
+
+console.log(memoizedFibonacci(10)); // Output: 55
+console.log(memoizedFibonacci(10)); // Output: Returning from cache: 55
 ```
 
-In this example, the `createCounter` function returns an object with two methods: `increment` and `getCount`. The `count` variable is enclosed within the returned object, creating a closure that allows accessing and modifying the `count` variable.
+In this example, we define a `memoize()` function that takes a function as an argument and returns a closure that implements memoization. When the returned function is called with a set of arguments, the closure checks if the arguments have already been cached. If so, the cached result is returned. Otherwise, the function passed to `memoize()` is called with the input parameters, the result is cached, and the result is returned.
 
-**4. Synchronous vs. Asynchronous programming:** Use Case: Asynchronous programming is essential for handling time-consuming operations without blocking the main execution thread.
+We then define a `fibonacci()` function, which calculates the nth Fibonacci number recursively. We use `memoize()` to create a new function `memoizedFibonacci` that caches the results of previous calculations, improving performance for repeated calculations.
+
+In summary, memoization is a powerful technique for optimizing the performance of functions in JavaScript by caching the results of expensive function calls and returning the cached result when the same inputs occur again.
+
+
+## **6. Explain the difference between prototypal and classical inheritance.**
+
+In JavaScript, there are two different ways to implement inheritance: prototypal and classical inheritance.
+
+1.  Prototypal Inheritance
+
+Prototypal inheritance is based on the prototype chain, which allows objects to inherit properties and methods from other objects. Every object in JavaScript has a prototype, which is another object that it inherits from.
+
+Here's an example of how to implement prototypal inheritance:
 
 ```js
-// Example
-console.log("Start");
-setTimeout(() => {
-  console.log("Async operation");
+// Define a parent object
+const person = {
+  name: "John",
+  age: 30,
+  greet() {
+    console.log(
+      `Hello, my name is ${this.name} and I'm ${this.age} years old.`
+    );
+  },
+};
+
+// Define a child object that inherits from the parent object
+const student = Object.create(person);
+student.major = "Computer Science";
+student.greet(); // Output: "Hello, my name is John and I'm 30 years old."
+```
+
+In this example, we define a `person` object that has a `name`, `age`, and a `greet()` method. We then create a new `student` object using the `Object.create()` method, which sets the `student` object's prototype to be the `person` object. The `student` object also has a `major` property that is specific to the `student` object. When we call the `greet()` method on the `student` object, it uses the `greet()` method of the `person` object through prototypal inheritance.
+
+2.  Classical Inheritance
+
+Classical inheritance is based on the concept of classes and objects. This approach emphasizes the distinction between classes (which define the properties and methods of an object) and instances (which are the actual objects themselves).
+
+Here's an example of how to implement classical inheritance in JavaScript using constructor functions:
+
+```js
+// Define a parent class
+class Person {
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+
+  greet() {
+    console.log(
+      `Hello, my name is ${this.name} and I'm ${this.age} years old.`
+    );
+  }
+}
+
+// Define a child class that inherits from the parent class
+class Student extends Person {
+  constructor(name, age, major) {
+    super(name, age);
+    this.major = major;
+  }
+}
+
+// Create a new student object
+const student = new Student("John", 30, "Computer Science");
+student.greet(); // Output: "Hello, my name is John and I'm 30 years old."
+```
+
+In this example, we define a `Person` class using the `class` syntax, which has a `name`, `age`, and a `greet()` method. We then define a `Student` class that inherits from the `Person` class using the `extends` keyword. The `Student` class has a `major` property that is specific to the `Student`. We then create a new `student` object using the `new` operator and pass in the required parameters to the `Student` class constructor. When we call the `greet()` method on the `student` object, it uses the `greet()` method of the `Person` class through classical inheritance.
+
+In summary, prototypal inheritance is based on the prototype chain and allows objects to inherit properties and methods from other objects, while classical inheritance is based on the concept of classes and emphasizes the distinction between classes and instances. Both approaches can be used to implement inheritance in JavaScript, depending on your coding style preference and project requirements.
+
+
+## **7. Explain how the `typeof` operator works.**
+
+In JavaScript, the `typeof` operator is used to determine the data type of a value or expression. It returns a string that indicates the data type of the operand.
+
+Here are the basic rules for using the `typeof` operator:
+
+1.  If the operand is a number, the `typeof` operator returns "number".
+2.  If the operand is a string, the `typeof` operator returns "string".
+3.  If the operand is a boolean value, the `typeof` operator returns "boolean".
+4.  If the operand is `undefined`, the `typeof` operator returns "undefined".
+5.  If the operand is `null`, the `typeof` operator returns "object". This is actually a bug in the language that has persisted since the beginning.
+6.  If the operand is an object or an array, the `typeof` operator returns "object".
+7.  If the operand is a function, the `typeof` operator returns "function".
+
+Here are some examples of using the `typeof` operator in JavaScript:
+
+```js
+console.log(typeof 123); // Output: "number"
+console.log(typeof "hello"); // Output: "string"
+console.log(typeof true); // Output: "boolean"
+console.log(typeof undefined); // Output: "undefined"
+console.log(typeof null); // Output: "object"
+console.log(typeof {}); // Output: "object"
+console.log(typeof []); // Output: "object"
+console.log(typeof function () {}); // Output: "function"
+```
+
+In summary, the `typeof` operator is used to determine the data type of a value or expression in JavaScript. It returns a string that indicates the data type of the operand, such as "number", "string", "boolean", "undefined", "object", or "function".
+
+
+## **8. What is the difference between a shallow copy and a deep copy of an object?**
+
+In JavaScript, when you create a copy of an object, you can create either a shallow copy or a deep copy. The main difference between the two is how they handle nested objects and arrays.
+
+A shallow copy creates a new object that references the same memory locations as the original object. This means that any changes made to the original object will also affect the shallow copy, and vice versa. However, if the original object contains nested objects or arrays, the references to those nested objects and arrays are copied over, but the nested objects and arrays themselves are not duplicated. Instead, the shallow copy will reference the same nested objects and arrays as the original object.
+
+Here's an example:
+
+```js
+var originalObj = { a: 1, b: { c: 2 } };
+var shallowCopy = Object.assign({}, originalObj);
+
+originalObj.b.c = 3;
+
+console.log(originalObj); // Output: { a: 1, b: { c: 3 } }
+console.log(shallowCopy); // Output: { a: 1, b: { c: 3 } }
+```
+
+In this example, when we change the value of `b.c` in the original object, the same change is reflected in the shallow copy because they both reference the same nested object `{ c: 3 }`.
+
+On the other hand, a deep copy creates a new object with all the same properties and values as the original object, including any nested objects or arrays. This means that changes made to the original object will not affect the deep copy, and vice versa.
+
+Here's an example:
+
+```js
+var originalObj = { a: 1, b: { c: 2 } };
+var deepCopy = JSON.parse(JSON.stringify(originalObj));
+
+originalObj.b.c = 3;
+
+console.log(originalObj); // Output: { a: 1, b: { c: 3 } }
+console.log(deepCopy); // Output: { a: 1, b: { c: 2 } }
+```
+
+In this example, when we change the value of `b.c` in the original object, the deep copy remains unchanged because it copied all the nested objects and arrays by value, rather than by reference.
+
+
+## **9. What is the event loop in JavaScript, and how does it work?**
+
+In JavaScript, the event loop is a mechanism that handles asynchronous callbacks and manages the order in which they are executed. When an event occurs (like a user clicking a button or a response coming back from a server), a callback function is created and added to a task queue. The event loop continuously checks the call stack for any running functions or synchronous code, and when it's empty, it moves on to process tasks in the task queue.
+
+Here's how the event loop works:
+
+1.  All synchronous code gets executed immediately and the results are returned.
+2.  Any asynchronous code (like setTimeout or AJAX requests) creates a callback function and adds it to the task queue.
+3.  When the call stack is empty (i.e., all synchronous code has been executed), the event loop takes the first task from the task queue and pushes its corresponding callback function onto the call stack to be executed.
+4.  This process repeats, with the event loop continuously checking the call stack for any running functions or synchronous code and moving on to process tasks in the task queue when it's empty.
+
+To illustrate this, consider the following example:
+
+```js
+console.log("start");
+
+setTimeout(function () {
+  console.log("middle");
 }, 2000);
-console.log("End");
+
+console.log("end");
 ```
 
-In this example, the `setTimeout` function is used to simulate an asynchronous operation that will execute after 2 seconds. While the timer is running, the program continues executing the rest of the code, resulting in "Start" and "End" being logged before the "Async operation".
-
-**5. Event loop: Use Case:** The event loop handles asynchronous operations and ensures the responsive and non-blocking nature of JavaScript.
+Even though `setTimeout` is called second, it is an asynchronous function that creates a callback and adds it to the task queue. So the output of this example will be:
 
 ```js
-// Example
-console.log("Start");
-setTimeout(() => {
-  console.log("Async operation");
-}, 0);
-Promise.resolve().then(() => {
-  console.log("Promise resolved");
-});
-console.log("End");
+start;
+end;
+middle;
 ```
 
-In this example, `setTimeout` and `Promise.resolve().then()` are queued in the event loop for execution. Even though the timeout is set to 0 milliseconds, the "Async operation" will be logged after "Promise resolved" due to the event loop's order of execution.
+This is because the two `console.log` statements are synchronous and get executed immediately, whereas the callback function for `setTimeout` is added to the task queue and only gets executed after a delay of 2 seconds.
 
-**6. `let`, `const`, and `var`:** Use Case: Choosing the appropriate variable declaration based on scope and mutability requirements.
+The event loop is what makes it possible to write non-blocking code in JavaScript, as it allows the program to continue running while waiting for asynchronous operations to complete.
+
+
+## **10. What is a decorator in JavaScript?**
+
+In JavaScript, a decorator is a function that takes another function or class as input and extends or modifies its behavior without changing its source code. Decorators are typically used to add functionality such as logging, caching, or validation to existing functions or classes, or to modify their behavior based on certain conditions.
+
+Decorators can be applied using the `@` symbol followed by the name of the decorator function, like this:
 
 ```js
-// Example
-function example() {
-  if (true) {
-    var x = 5; // Function-scoped variable
-    let y = 10; // Block-scoped variable
-    const z = 15; // Block-scoped constant
-    console.log(x, y, z); // Output: 5 10 15
-  }
-  console.log(x); // Output: 5
-  console.log(y); // Throws ReferenceError: y is not defined
-  console.log(z); // Throws ReferenceError: z is not defined
+@decorator
+function myFunction() {
+  // ...
 }
-example();
 ```
 
-In this example, `var` declares a variable that is function-scoped, allowing it to be accessed outside the `if` block. However, `let` and `const` are block-scoped and can only be accessed within their respective blocks.
-
-**7. Shallow copy vs. Deep copy:** Use Case: Copying objects or arrays while maintaining data integrity and avoiding unintended mutations.
+Or for classes:
 
 ```js
-// Example - Shallow Copy
-const originalArray = [1, 2, 3];
-const shallowCopy = originalArray;
-shallowCopy.push(4);
-console.log(originalArray); // Output: [1, 2, 3, 4]
-console.log(shallowCopy); // Output: [1, 2, 3, 4]
+@decorator
+class MyClass {
+  // ...
+}
 ```
 
-In this example, the `shallowCopy` variable references the same array as `originalArray`. Modifying `shallowCopy` also affects `originalArray` because they point to the same reference in memory.
+Here's an example of a simple decorator that logs the arguments and return value of a function:
 
 ```js
-// Example - Deep Copy
-const originalArray = [1, 2, 3];
-const deepCopy = [...originalArray];
-deepCopy.push(4);
-console.log(originalArray); // Output: [1, 2, 3]
-console.log(deepCopy); // Output: [1, 2, 3, 4]
+function log(target, name, descriptor) {
+  var original = descriptor.value;
+  descriptor.value = function () {
+    console.log("Arguments:", arguments);
+    var result = original.apply(this, arguments);
+    console.log("Result:", result);
+    return result;
+  };
+  return descriptor;
+}
+
+class MyClass {
+  @log
+  myMethod(a, b) {
+    return a + b;
+  }
+}
+
+var obj = new MyClass();
+obj.myMethod(1, 2); // Output: Arguments: [1, 2], Result: 3
 ```
 
-In this example, the spread operator (`...`) creates a new array with the same values as `originalArray`. Modifying `deepCopy` does not affect `originalArray` since they are separate arrays in memory.
+In this example, we define a `log` decorator function that wraps a method with logging statements. We then decorate the `myMethod()` method inside the `MyClass` class with the `@log` decorator. When we create a new object of the `MyClass` class and call its `myMethod()` method, we see that the arguments and return value are logged to the console.
 
-**8. `this` keyword:** Use Case: Understanding the dynamic context of `this` based on how a function is called.
+Decorators are implemented using either classes or higher-order functions in JavaScript, depending on the use case. With classes, decorators are called automatically when the class is defined, whereas with higher-order functions, the decorator needs to be explicitly called to wrap the target function.
+
+
+## **11. What is the difference between `event.preventDefault()` and `event.stopPropagation()`?**
+
+`event.preventDefault()` and `event.stopPropagation()` are both methods available in JavaScript for working with events, but they have different functionalities.
+
+- `event.preventDefault()` is a method that prevents the default action of an event from occurring. For example, if you have a link with an attached `click` event that takes the user to a new page, calling `event.preventDefault()` within the event handler will prevent the link from navigating to the new page.
+
+Here's an example:
 
 ```js
-// Example
+const link = document.querySelector("a");
+
+link.addEventListener("click", (event) => {
+  event.preventDefault(); // Prevents the default action of the click event
+});
+```
+
+In this example, clicking the link will not navigate the user to the new page because `event.preventDefault()` is called within the event handler.
+
+- `event.stopPropagation()` is a method that stops the propagation of an event through the DOM tree. When an event occurs on a DOM element, it propagates through its parent elements up to the top-most element of the DOM tree. Calling `event.stopPropagation()` within an event handler prevents the event from bubbling up the DOM tree any further.
+
+Here's an example:
+
+```js
+const parent = document.querySelector(".parent");
+const child = document.querySelector(".child");
+
+parent.addEventListener("click", () => {
+  console.log("Clicked parent");
+});
+
+child.addEventListener("click", (event) => {
+  console.log("Clicked child");
+  event.stopPropagation(); // Stops the event from propagating to the parent
+});
+```
+
+In this example, clicking the child element will log `'Clicked child'` to the console, but will not trigger the click event on the parent element because `event.stopPropagation()` is called within the child event handler.
+
+In summary, `event.preventDefault()` prevents the default action of an event from occurring while `event.stopPropagation()` stops the event from propagating any further up the DOM tree.
+
+
+## **12. What is the difference between `Object.create()` and `new` keyword?**
+
+`Object.create()` and the `new` keyword are both methods available in JavaScript for creating objects, but they have different functionalities.
+
+- `Object.create()`: this method creates a new object with the specified prototype object and any additional properties provided as an argument. It allows you to create an object that inherits from another object, without having to define a constructor function. The prototype of the newly created object is set to the object passed as the first parameter to `Object.create()`, or to the `null` value if no argument is passed.
+
+Here's an example:
+
+```js
 const person = {
-  name: "John",
+  name: "John Doe",
+  age: 30,
   greet: function () {
-    console.log(`Hello, ${this.name}!`);
+    console.log(`Hello, my name is ${this.name}`);
   },
 };
-const greet = person.greet;
-greet(); // Output: Hello, undefined
-const boundGreet = person.greet.bind(person);
-boundGreet(); // Output: Hello, John!
+
+const john = Object.create(person);
+
+john.name = "John";
+john.greet(); // Output: 'Hello, my name is John'
 ```
 
-In this example, when `greet` is called directly, the `this` keyword refers to the global object (in non-strict mode), resulting in `undefined` for `this.name`. However, using `bind` explicitly binds the `person` object as the `this` value, allowing the correct name to be logged.
+In this example, `Object.create()` creates a new object `john` that has the same properties and methods as the `person` object. `john` inherits the `name`, `age`, and `greet()` method from the `person` object. The `name` property of `john` is then set to `'John'`.
 
-**9. `==` vs. `===`:** Use Case: Comparing values for equality and understanding the differences in coercion behavior.
+- `new` keyword: when used with a constructor function, the `new` keyword creates a new instance of the object defined by the constructor function. The `new` keyword creates a new empty object and sets its prototype to the `prototype` property of the constructor function. It then calls the constructor function with the newly created object as the `this` context and returns the newly created object.
+
+Here's an example:
 
 ```js
-// Example
-console.log(5 == "5"); // Output: true
-console.log(5 === "5"); // Output: false
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+}
+
+Person.prototype.greet = function () {
+  console.log(`Hello, my name is ${this.name}`);
+};
+
+const john = new Person("John", 30);
+
+john.greet(); // Output: 'Hello, my name is John'
 ```
 
-In JavaScript, `==` performs type coercion before comparison, allowing different types to be considered equal if their values match. However, `===` performs a strict equality comparison, checking for both value and type.
+In this example, the `Person` constructor function defines a new `Person` object with `name` and `age` properties and a `greet()` method on its prototype. Using the `new` keyword with the `Person` constructor function creates a new instance of the `Person` object, sets its `name` and `age` properties to `'John'` and `30`, respectively, and returns the newly created object. The `greet()` method can be called on the newly created object `john`.
 
-**10. Data types in JavaScript:** Use Case: Identifying and working with different types of data.
+In summary, `Object.create()` creates a new object that inherits from an existing object, while the `new` keyword creates a new instance of an object defined by a constructor function.
 
-```js
-// Example
-const age = 30; // number
-const name = "John"; // string
-const isStudent = true; // boolean
-const person = { name: "John", age: 30 }; // object
-const greet = function () {
-  console.log("Hello!");
-}; // function
-let value; // undefined
-const empty = null; // null
-console.log(typeof age); // Output: number
-console.log(typeof name); // Output: string
-console.log(typeof isStudent); // Output: boolean
-console.log(typeof person); // Output: object
-console.log(typeof greet); // Output: function
-console.log(typeof value); // Output: undefined
-console.log(typeof empty); // Output: object
-```
+## **13. What is the difference between a stack and a queue?**
 
-In this example, various data types in JavaScript are assigned to different variables, and the `typeof` operator is used to determine their types.
+In JavaScript, a stack and a queue are both abstract data types, which are used to store and manipulate collections of data. They have different behaviors and usage.
 
-**11. Event delegation:** Use Case: Efficiently handling events on dynamically added elements or child elements within a parent container.
+- A **stack** is a linear data structure that follows the Last-In-First-Out (LIFO) principle. In a stack, the last element added to the collection is the first one to be removed. This behavior makes stacks useful for implementing undo/redo functionality, maintaining call stacks in recursive functions, and parsing expressions.
+
+Here's an example of using a stack to reverse a string:
 
 ```js
-// Example
-const parentContainer = document.getElementById("parent");
-parentContainer.addEventListener("click", function (event) {
-  if (event.target.tagName === "BUTTON") {
-    console.log("Button clicked!");
+function reverseString(str) {
+  const stack = [];
+
+  for (let i = 0; i < str.length; i++) {
+    stack.push(str[i]);
   }
-});
-```
 
-In this example, instead of attaching individual event listeners to each button element, a single event listener is attached to the parent container. The event is then delegated to the appropriate button element based on the target of the event.
+  let reversedStr = "";
 
-**12. Callback functions:** Use Case: Handling asynchronous operations or executing code after a specific event or task completes.
-
-```js
-// Example
-function fetchData(url, callback) {
-  // Simulating an asynchronous request
-  setTimeout(function () {
-    const data = { name: "John", age: 30 };
-    callback(data);
-  }, 2000);
-}
-function processData(data) {
-  console.log(`Processing data: ${JSON.stringify(data)}`);
-}
-fetchData("https://api.example.com/data", processData);
-```
-
-In this example, the `fetchData` function performs an asynchronous request and accepts a callback function as an argument. Once the data is fetched, the callback function `processData` is invoked with the retrieved data as its argument.
-
-**13. `bind` method:** Use Case: Setting the `this` value explicitly for a function or creating partially applied functions.
-
-```js
-// Example
-const person = {
-  name: "John",
-  greet: function (message) {
-    console.log(`${message}, ${this.name}!`);
-  },
-};
-const greet = person.greet;
-greet("Hello"); // Output: undefined, Hello!
-const boundGreet = person.greet.bind(person, "Hi");
-boundGreet(); // Output: Hi, John!
-```
-
-In this example, the `greet` function is initially assigned to `greet`, causing the `this` value to become `undefined`. However, using `bind` to bind `person` as the `this` value and provide the message argument creates a new function `boundGreet` that logs the desired greeting.
-
-**14. Lexical scoping:** Use Case: Resolving variable names based on their placement in the source code and scoping rules.
-
-```js
-// Example
-function outer() {
-  const x = 10;
-  function inner() {
-    const x = 20;
-    console.log(x); // Output: 20
+  while (stack.length > 0) {
+    reversedStr += stack.pop();
   }
-  inner();
-  console.log(x); // Output: 10
+
+  return reversedStr;
 }
-outer();
+
+console.log(reverseString("hello")); // Output: 'olleh'
 ```
 
-In this example, the `inner` function has its own `x` variable, which shadows the `x` variable in the outer function. The concept of lexical scoping allows accessing the inner `x` within the `inner` function, while the outer `x` remains unaffected.
+In this example, `reverseString()` function uses a stack to push each character of the input string onto the stack. The function then pops each character off the stack and concatenates it to a new string in reverse order.
 
-**15. `map` method:** Use Case: Transforming elements of an array to create a new array.
+- A **queue** is a linear data structure that follows the First-In-First-Out (FIFO) principle. In a queue, the first element added to the collection is the first one to be removed. This behavior makes queues useful for implementing job scheduling, message passing, and asynchronous programming.
 
-```js
-// Example
-const numbers = [1, 2, 3, 4, 5];
-const squaredNumbers = numbers.map(function (num) {
-  return num * num;
-});
-console.log(squaredNumbers); // Output: [1, 4, 9, 16, 25]
-```
-
-In this example, the `map` method is used to transform each element of the `numbers` array by squaring it. The resulting array, `squaredNumbers`, contains the squared values of the original numbers.
-
-**16. Promises:** Use Case: Handling asynchronous operations and chaining multiple operations.
+Here's an example of using a queue to process messages:
 
 ```js
-// Example
-function fetchData(url) {
-  return new Promise(function (resolve, reject) {
-    // Simulating an asynchronous request
-    setTimeout(function () {
-      const data = { name: "John", age: 30 };
-      resolve(data);
-    }, 2000);
-  });
+const messageQueue = [];
+
+function sendMessage(message) {
+  messageQueue.push(message);
 }
-function processData(data) {
-  console.log(`Processing data: ${JSON.stringify(data)}`);
+
+function processMessages() {
+  while (messageQueue.length > 0) {
+    const message = messageQueue.shift();
+    console.log(`Processing message: ${message}`);
+  }
 }
-fetchData("https://api.example.com/data")
-  .then(processData)
-  .catch(function (error) {
-    console.log(`Error: ${error}`);
-  });
-```
 
-In this example, the `fetchData` function returns a Promise that resolves with the fetched data. The `processData` function is then called with the resolved data using the `then` method. If any errors occur during the Promise chain, they are caught and logged using the `catch` method.
-
-**17. Arrow functions:** Use Case: Writing concise function expressions and avoiding the need for `this` binding.
-
-```js
-// Example
-const numbers = [1, 2, 3, 4, 5];
-const doubledNumbers = numbers.map((num) => num * 2);
-console.log(doubledNumbers); // Output: [2, 4, 6, 8, 10]
-```
-
-In this example, the arrow function syntax is used to create a concise function expression that doubles each element of the `numbers` array, resulting in the `doubledNumbers` array.
-
-**18. `apply` and `call` methods:** Use Case: Invoking a function with a specific `this` value and arguments.
-
-```js
-// Example
-const person = {
-  name: "John",
-  greet: function (message) {
-    console.log(`${message}, ${this.name}!`);
-  },
-};
-function greet(message) {
-  console.log(`${message}, ${this.name}!`);
-}
-greet.call(person, "Hello"); // Output: Hello, John!
-greet.apply(person, ["Hi"]); // Output: Hi, John!
-```
-
-In this example, the `call` and `apply` methods are used to invoke the `greet` function with `person` as the `this` value and "Hello" and "Hi" as the respective message arguments.
-
-**19. `forEach` method:** Use Case: Iterating over an array and performing an operation on each element.
-
-```js
-// Example
-const numbers = [1, 2, 3, 4, 5];
-numbers.forEach(function (num) {
-  console.log(num * 2);
-});
+sendMessage("Hello");
+sendMessage("World");
+processMessages();
 // Output:
-// 2
-// 4
-// 6
-// 8
-// 10
+// Processing message: Hello
+// Processing message: World
 ```
 
-In this example, the `forEach` method is used to iterate over each element of the `numbers` array and log its double.
+In this example, `sendMessage()` function adds a message to the end of the message queue using the `push()` method. The `processMessages()` function processes each message in the queue by removing the first message using the `shift()` method and logging it to the console.
 
-**20. `localStorage` vs. `sessionStorage`:** Use Case: Storing data in the browser and understanding the differences in data persistence.
-
-```js
-// Example
-localStorage.setItem("name", "John");
-sessionStorage.setItem("age", "30");
-const storedName = localStorage.getItem("name");
-const storedAge = sessionStorage.getItem("age");
-console.log(storedName); // Output: John
-console.log(storedAge); // Output: 30
-```
-
-In this example, data is stored in both `localStorage` and `sessionStorage` using the `setItem` method. The `getItem` method is then used to retrieve the stored data. `localStorage` stores data that persists even after the browser is closed and reopened, while `sessionStorage` stores data that persists only within the same session.
+In summary, a stack follows the LIFO principle, while a queue follows the FIFO principle. Stacks are useful for reversing and parsing operations, while queues are useful for managing job scheduling and message processing.
 
 # Angular
 
-**1. What is Angular Ivy and how does it improve the Angular framework?**
-Answer: Angular Ivy is the new rendering engine introduced in Angular 9. It provides enhanced bundle size reduction, improved build times, and better runtime performance. Ivy introduces features like selective rendering, improved tree shaking, and template type checking. It allows for faster rendering of components and better error messages during compilation.
-
-**2. Explain the concept of Angular change detection and how it works.**
+**1. Explain the concept of Angular change detection and how it works.**
 Answer: Angular uses change detection to track changes in component properties and update the view accordingly. Change detection is triggered automatically whenever an event occurs (e.g., user interaction) or when data changes. Angular uses a hierarchical tree structure to efficiently detect and propagate changes. It follows a top-down approach starting from the root component and traverses the component tree. Angular checks the component's properties for changes and updates the corresponding parts of the view.
 
-**3. What are Angular reactive forms and how are they different from template-driven forms?**
+**2. What are Angular reactive forms and how are they different from template-driven forms?**
 Answer: Angular reactive forms provide a model-driven approach for handling forms in Angular. It involves creating form controls programmatically and binding them to the component's properties. Reactive forms offer more flexibility and control over form validation and complex form scenarios. In contrast, template-driven forms rely on directives in the HTML template for form handling and validation. Reactive forms are generally recommended for complex forms with dynamic behavior and custom validation requirements.
 
-**4. Explain the concept of lazy loading in Angular and how it improves application performance.**
+**3. Explain the concept of lazy loading in Angular and how it improves application performance.**
 Answer: Lazy loading is a technique in Angular that allows modules to be loaded on-demand as the user navigates through the application. By loading modules only when needed, lazy loading reduces the initial bundle size and improves application startup time. Lazy loading is achieved using Angular's routing system, where specific routes are configured to load modules asynchronously. This technique is especially useful for large applications with multiple feature modules, as it avoids loading unnecessary code upfront.
 
-**5. How would you implement authentication and authorization in an Angular application?**
+**4. How would you implement authentication and authorization in an Angular application?**
 Answer: Implementing authentication and authorization in an Angular application involves several steps:
 
 - Setting up a login page and capturing user credentials.
@@ -393,7 +608,7 @@ export class AuthService {
 }
 ```
 
-**6. Explain the concept of Angular interceptors and provide an example of their usage.**
+**5. Explain the concept of Angular interceptors and provide an example of their usage.**
 Answer: Angular interceptors are classes that can intercept and modify HTTP requests and responses. They provide a way to add global error handling, authentication headers, logging, and other cross-cutting concerns to HTTP requests. Interceptors implement the `HttpInterceptor` interface and can be added to the `HTTP_INTERCEPTORS` multi-provider.
 Example: Here's an example of an interceptor that adds an authentication header to each outgoing request:
 
@@ -443,7 +658,7 @@ import { AuthInterceptor } from "./auth.interceptor";
 export class AppModule {}
 ```
 
-**7. How would you handle form validation and error handling in Angular reactive forms?**
+**6. How would you handle form validation and error handling in Angular reactive forms?**
 Answer: Angular provides various techniques for form validation and error handling in reactive forms:
 
 - Using built-in validators such as `required`, `minLength`, `maxLength`, etc.
@@ -491,7 +706,7 @@ export class MyFormComponent {
 }
 ```
 
-**8. What are Angular guards and how would you use them?**
+**7. What are Angular guards and how would you use them?**
 Answer: Angular guards are used to protect routes and control access to certain parts of an application. There are four types of guards: `CanActivate`, `CanActivateChild`, `CanDeactivate`, and `CanLoad`.
 
 - `CanActivate` guard is used to allow or deny access to a route.
@@ -549,7 +764,7 @@ const routes: Routes = [
 export class AppRoutingModule {}
 ```
 
-**9. How would you optimize an Angular application for performance?**
+**8. How would you optimize an Angular application for performance?**
 Answer: There are several techniques to optimize Angular application performance:
 
 - Use lazy loading to load modules on-demand and reduce initial bundle size.
@@ -563,7 +778,7 @@ Answer: There are several techniques to optimize Angular application performance
 - Use observables and reactive programming to handle asynchronous operations efficiently.
   These techniques, combined with good coding practices and profiling tools like Angular DevTools, can significantly improve the performance of an Angular application.
 
-**10. How do you handle communication between components in Angular?**
+**9. How do you handle communication between components in Angular?**
 Answer: Angular provides several mechanisms for communication between components:
 
 - Parent-to-child communication: This can be achieved through property binding and input properties. The parent component can pass data to the child component using property bindings and the `@Input` decorator.
@@ -615,7 +830,7 @@ export class ChildComponent {
 
 In this example, the parent component passes the `message` property to the child component using property binding. The child component displays the message and emits an event when the button is clicked. The parent component handles the event and logs the received event. This demonstrates parent-to-child and child-to-parent communication in Angular.
 
-**11. Explain the concept of Angular content projection (ng-content) and provide an example of its usage.**
+**10. Explain the concept of Angular content projection (ng-content) and provide an example of its usage.**
 Answer: Angular content projection allows you to pass content from a parent component to a child component, enabling flexible component composition. It is achieved using the `<ng-content>` directive. The content placed between the opening and closing tags of the child component is projected into the designated area within the child component's template.
 Example:
 
@@ -645,7 +860,7 @@ In this example, the content between the `<app-child>` tags in the parent compon
 </div>
 ```
 
-**12. Explain the concept of Angular component life cycle hooks and provide examples of their usage.**
+**11. Explain the concept of Angular component life cycle hooks and provide examples of their usage.**
 Answer: Angular component life cycle hooks are methods that allow you to tap into specific moments in the life cycle of a component. They provide opportunities to perform actions during different stages, such as initialization, change detection, and destruction of a component.
 Example:
 
@@ -672,7 +887,7 @@ export class MyComponent implements OnInit, OnDestroy {
 In this example, the `OnInit` interface is implemented to use the `ngOnInit` method, which is called when the component is initialized. It is a good place to perform initialization tasks, such as retrieving data from a server.
 The `OnDestroy` interface is implemented to use the `ngOnDestroy` method, which is called just before the component is destroyed. It is useful for cleaning up resources, such as unsubscribing from observables, to prevent memory leaks.
 
-**13. What are Angular pipes and how would you create a custom pipe?**
+**12. What are Angular pipes and how would you create a custom pipe?**
 Answer: Angular pipes are a way to transform data within templates. They are used to format and manipulate data before displaying it in the view. Angular provides built-in pipes such as `DatePipe`, `UpperCasePipe`, `LowerCasePipe`, etc.
 To create a custom pipe, you can use the `@Pipe` decorator and implement the `PipeTransform` interface.
 Example:
@@ -703,7 +918,7 @@ The output will be:
 <p>HELLO WORLD</p>
 ```
 
-**14. How would you implement data sharing between sibling components in Angular?**
+**13. How would you implement data sharing between sibling components in Angular?**
 Answer: To implement data sharing between sibling components, you can use a shared service as a mediator. The shared service holds the data that needs to be shared between components, and the components can access and update the data through the service.
 Example:
 
@@ -771,7 +986,7 @@ export class SiblingBComponent implements OnInit {
 
 In this example, `SiblingAComponent` updates the `data` property and calls the `sendData` method to send the data through the shared service. `SiblingBComponent` subscribes to the `data$` observable and updates the `receivedData` property whenever new data is received.
 
-**15. How would you handle asynchronous operations in Angular?**
+**14. How would you handle asynchronous operations in Angular?**
 Answer: Angular provides several mechanisms for handling asynchronous operations:
 
 - Promises: Promises are a way to handle asynchronous operations that will eventually resolve with a value or fail with an error. They can be used with the `then` and `catch` methods to handle success and failure cases respectively.
@@ -821,13 +1036,13 @@ async function fetchData(): Promise<any> {
 These are some of the ways to handle asynchronous operations in Angular. The choice of approach depends on the specific use case and requirements of your application.
 These were 15 challenging questions with detailed answers and examples for a senior frontend developer in Angular 9 or above. I hope they provide you with valuable insights and help you prepare for your interview.
 
-**16. How does Angular change detection work? Explain the default change detection strategy and the OnPush change detection strategy.**
+**15. How does Angular change detection work? Explain the default change detection strategy and the OnPush change detection strategy.**
 Answer: Angular change detection is a mechanism that determines when and how to update the view based on changes in the application state. It tracks changes to properties and data bindings of components and their child components.
 
 - Default Change Detection Strategy: In the default change detection strategy, Angular automatically detects changes by running change detection on all components in the application's view tree. It does so by periodically checking all the bindings and updating the view accordingly. Any change in the component's properties or data bindings triggers a cascade of change detection across the component tree.
 - OnPush Change Detection Strategy: The OnPush change detection strategy is an optimization technique that reduces the number of change detection cycles by making components dependent only on their inputs and the outputs of pure functions. It allows components to skip change detection if their inputs haven't changed. This strategy can significantly improve the performance of an application.
 
-**17. How would you handle form validation in Angular? Provide an example.**
+**16. How would you handle form validation in Angular? Provide an example.**
 Answer: Angular provides built-in form validation features that allow you to validate user input and provide feedback. Here's an example of handling form validation in Angular:
 
 ```ts
@@ -870,7 +1085,7 @@ In this example, we create a reactive form using the `FormGroup` and `FormContro
 In the template, we bind the form group to the `<form>` element using `[formGroup]="myForm"`. We bind the `name` form control to the `<input>` element using `formControlName="name"`. We display validation errors based on the control's state using `*ngIf` directives.
 The submit button is disabled when the form is invalid using `[disabled]="myForm.invalid"`. In the `submitForm` method, we check if the form is valid before performing form submission logic.
 
-**18. How would you implement lazy loading in Angular? Provide an example.**
+**17. How would you implement lazy loading in Angular? Provide an example.**
 Answer: Lazy loading in Angular allows you to load feature modules on-demand, reducing the initial bundle size and improving application performance. Here's an example of implementing lazy loading in Angular:
 
 ```ts
@@ -919,7 +1134,7 @@ export class HomeModule {}
 In the lazy-loaded module (e.g., `HomeModule`), you define the module-specific routes and components. The module is imported using the `import()` function and the module's routes are configured using `RouterModule.forChild()`.
 With lazy loading configured, the corresponding module and its associated resources (e.g., components, services) will be loaded only when the user navigates to the specified route.
 
-**19. How would you handle HTTP requests in Angular? Provide an example using the HttpClient module.**
+**18. How would you handle HTTP requests in Angular? Provide an example using the HttpClient module.**
 Answer: In Angular, you can handle HTTP requests using the `HttpClient` module, which provides a simplified API for making HTTP requests. Here's an example:
 
 ```ts
@@ -952,7 +1167,7 @@ In this example, we import the `HttpClient` module from `@angular/common/http`. 
 We subscribe to the observable returned by `http.get` and handle the response data in the callback function. In this case, we assign the response data to the `data` property, which is then displayed in the template.
 Note that you need to import and configure the `HttpClientModule` in your root or feature module to use the `HttpClient` module. You can do this by adding it to the `imports` array of the module's decorator.
 
-**20. How would you implement route guards in Angular? Provide an example of a route guard.**
+**19. How would you implement route guards in Angular? Provide an example of a route guard.**
 Answer: Route guards in Angular allow you to control access to routes based on certain conditions. They can be used to implement authentication, authorization, and other access control mechanisms. Here's an example of implementing a route guard:
 
 ```ts
