@@ -209,64 +209,62 @@ By using the Facade pattern in Angular, we can simplify the usage of complex sub
 
 ## Angular Interviews questions
 
-1. Q: What is the difference between `ngOnInit` and `constructor` in Angular?
+1. **Q: What is the difference between `ngOnInit` and `constructor` in Angular?**
    A: The `constructor` is a TypeScript feature and is used for basic initialization of the component, while `ngOnInit` is an Angular lifecycle hook that is specifically used for initialization tasks related to the component's dependencies.
 
-2. Q: Explain the concept of change detection in Angular.
+2. **Q: Explain the concept of change detection in Angular.**
    A: Change detection is the mechanism used by Angular to track and propagate changes in the application's data model to update the corresponding views. It ensures that the view stays in sync with the data model.
 
-3. Q: What are Angular directives?
+3. **Q: What are Angular directives?**
    A: Directives in Angular are markers on a DOM element that tell Angular's compiler to attach a specific behavior to that element or transform it and its children. There are three types of directives: component directives, structural directives, and attribute directives.
 
-4. Q: What is the purpose of the `ViewChild` decorator in Angular?
+4. **Q: What is the purpose of the `ViewChild` decorator in Angular?**
    A: The `ViewChild` decorator is used to obtain a reference to a child component, directive, or element from a parent component. It allows parent components to interact with their child elements or components.
 
-5. Q: What is the purpose of Angular services?
+5. **Q: What is the purpose of Angular services?**
    A: Angular services are used to share data, logic, and functionality between different components in an application. They provide a way to centralize and organize reusable code.
 
-6. Q: How can you pass data from a parent component to a child component in Angular?
+6. **Q: How can you pass data from a parent component to a child component in Angular?**
    A: Data can be passed from a parent component to a child component using property binding. The parent component can bind a property value to an input property of the child component using square brackets syntax.
 
-7. Q: What is the difference between `@Input` and `@Output` decorators in Angular?
+7. **Q: What is the difference between `@Input` and `@Output` decorators in Angular?**
    A: The `@Input` decorator is used to allow a value to be passed into a component from its parent component, while the `@Output` decorator is used to emit custom events from a component to its parent component.
 
-8. Q: What is lazy loading in Angular and how does it improve performance?
+8. **Q: What is lazy loading in Angular and how does it improve performance?**
    A: Lazy loading is a technique in Angular where modules are loaded only when they are needed, on-demand. It improves performance by reducing the initial bundle size and loading only the necessary code for the current route or feature.
 
-9. Q: How can you handle errors in Angular HTTP requests?
+9. **Q: How can you handle errors in Angular HTTP requests?**
    A: Errors in Angular HTTP requests can be handled using the `catchError` operator from the RxJS library. It allows you to catch and handle any errors that occur during the HTTP request.
 
-10. Q: What is Angular Universal, and why would you use it?
+10. **Q: What is Angular Universal, and why would you use it?**
     A: Angular Universal is a server-side rendering (SSR) solution for Angular applications. It allows the application to be pre-rendered on the server, improving performance and SEO.
 
-11. Q: Explain the concept of Angular modules.
+11. **Q: Explain the concept of Angular modules.**
     A: Angular modules are used to organize and encapsulate related components, directives, pipes, and services. They help in managing the application's dependencies and provide a way to group related functionality.
 
-12. Q: What is Angular routing and how does it work?
+12. **Q: What is Angular routing and how does it work?**
     A: Angular routing is a mechanism that allows navigation between different components or views within an application. It maps URLs to specific components and provides a way to handle navigation events.
 
-13. Q: What is the purpose of the `async` pipe in Angular?
+13. **Q: What is the purpose of the `async` pipe in Angular?**
     A: The `async` pipe in Angular is used to handle asynchronous data streams. It subscribes to an observable or a promise and automatically updates the view with the emitted values when they arrive.
 
-14. Q: How can you share data between sibling components in
+14. **Q: How can you share data between sibling components in Angular?**
+    A: Data can be shared between sibling components using a shared service. The service acts as a mediator between the components, allowing them to communicate and share data.
 
-Angular?
-A: Data can be shared between sibling components using a shared service. The service acts as a mediator between the components, allowing them to communicate and share data.
-
-15. Q: What is Angular ng-template and how can you use it?
+15. **Q: What is Angular ng-template and how can you use it?**
     A: `ng-template` is a directive in Angular that is used for rendering content conditionally or for defining reusable template fragments. It is commonly used with structural directives like `ngIf` and `ngFor`.
 
-16. Q: What is Angular dependency injection and how does it work?
+16. **Q: What is Angular dependency injection and how does it work?**
     A: Angular dependency injection is a design pattern used to provide objects or services that a class or component depends on. It allows for loose coupling between components and promotes reusability and testability.
 
-17. Q: How can you improve the performance of an Angular application?
+17. **Q: How can you improve the performance of an Angular application?**
     A: Some strategies to improve Angular application performance include lazy loading modules, optimizing change detection, using trackBy with ngFor, reducing the number of HTTP requests, and applying ahead-of-time (AOT) compilation.
 
-18. Q: What is Angular ng-content and how can you use it?
+18. **Q: What is Angular ng-content and how can you use it?**
     A: `ng-content` is a directive in Angular used for content projection. It allows you to pass content from a parent component to a child component and render it at a designated location using `<ng-content></ng-content>`.
 
-19. Q: How can you handle form validation in Angular?
+19. **Q: How can you handle form validation in Angular?**
     A: Form validation in Angular can be achieved using built-in validators such as required, minLength, and custom validators. Angular provides form control, form group, and form builder APIs to facilitate form validation.
 
-20. Q: What is Angular's trackBy function and why is it important?
+20. **Q: What is Angular's trackBy function and why is it important?**
     A: The `trackBy` function is used with `ngFor` to improve the performance of rendering lists by tracking the identity of items. It helps Angular identify which items have changed, been added, or removed, reducing unnecessary re-rendering.
