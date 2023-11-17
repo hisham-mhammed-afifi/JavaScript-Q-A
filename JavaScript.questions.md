@@ -1,3 +1,5 @@
+# Basic-level
+
 ### Data Types and Variables:
 
 1. What are the primitive data types in JavaScript?
@@ -98,7 +100,7 @@
 
 ---
 
-Absolutely! Here's a set of 50 challenging intermediate-level JavaScript questions and problems:
+# intermediate-level
 
 ### Objects and Prototypes:
 
@@ -200,7 +202,7 @@ Absolutely! Here's a set of 50 challenging intermediate-level JavaScript questio
 
 ---
 
-Certainly! Here are 50 advanced-level JavaScript questions and problems:
+# advanced-level
 
 ### Advanced Concepts:
 
